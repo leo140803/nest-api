@@ -1,10 +1,10 @@
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Logger } from 'winston';
 import { UserRequest } from 'src/model/user.model';
 import { UserResponse } from '../model/user.model';
 import { ValidationService } from '../common/validation.service';
-import { PrismaService } from 'src/common/prisma.service';
+import { PrismaService } from '../common/prisma.service';
 import { UserValidation } from './user.validation';
 import * as bcrypt from 'bcrypt';
 
@@ -12,7 +12,7 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(
     private ValidationService: ValidationService,
-    @Inject(WINSTON_MODULE_NEST_PROVIDER) private logger: Logger,
+    @Inject(WINSTON_MODULE_PROVIDER) private logger: Logger,
     private prismaService: PrismaService,
   ) {}
   async register(request: UserRequest): Promise<UserResponse> {
@@ -41,6 +41,5 @@ export class UserService {
       username: user.username,
       name: user.name,
     };
-    return null;
   }
 }
