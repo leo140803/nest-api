@@ -3,6 +3,7 @@ import { Logger } from 'winston';
 import { PrismaService } from '../src/common/prisma.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import * as bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
 
 export class TestService {
   constructor(
@@ -19,12 +20,22 @@ export class TestService {
     });
   }
 
+  async getUser(): Promise<User> {
+    this.logger.info('masuk');
+    return await this.prismaService.user.findUnique({
+      where: {
+        username: 'test',
+      },
+    });
+  }
+
   async createUser() {
     await this.prismaService.user.create({
       data: {
         username: 'test',
-        password: 'test',
-        name: await bcrypt.hash('test', 10),
+        password: await bcrypt.hash('test', 10),
+        name: 'test',
+        token: 'test',
       },
     });
   }
